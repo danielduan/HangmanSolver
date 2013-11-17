@@ -5,7 +5,8 @@ Hangman.Current = {
     Phrase: "",
     RemainingTries: 0,
     Status: "DEAD",
-    Token: 0
+    Token: 0,
+    Guessed: "",
 };
 
 Hangman.Init = {
@@ -18,24 +19,52 @@ Hangman.Init = {
 
 Hangman.JSONUtility = {
 	Init: function() {
-
 		$.ajax({
             type: 'GET',
             url: Hangman.Current.URL,
             jsonp: "jsonp",
             dataType: 'jsonp',
             success: function (data) {
-                console.log(data.status);
+                //always errors, cant figure out jsonp issues :(
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                var error = "Error " + xhr.status + ". Check your URL";
-                Hangman.Utility.AppendOutput(error);
-                console.log(ajaxOptions);
-		    }
+                if (xhr.status != 200) {
+                    var error = "Error " + xhr.status + ". Check your URL.";
+                    Hangman.Utility.AppendOutput(error);
+                }
+		    },
+            complete: function() {
+                Hangman.Solver.NextGuess();
+            }
         });
 	},
+    Guess: function(guess) {
+        $.ajax({
+            type: 'GET',
+            url: Hangman.Current.URL + "&token=" + Hangman.Current.Token + "&guess=" + guess,
+            jsonp: "jsonp",
+            dataType: 'jsonp',
+            success: function (data) {
+                //always errors, cant figure out jsonp issues :(
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                if (xhr.status != 200) {
+                    var error = "Error " + xhr.status + ". Check your URL.";
+                    Hangman.Utility.AppendOutput(error);
+                }
+            },
+            complete: function() {
+                Hangman.Solver.NextGuess();
+            }
+        });
+    },
     ParseResponse: function(obj) {
-        return eval(obj);
+        obj = eval(obj);
+        Hangman.Current.Phrase = obj.state;
+        Hangman.Utility.UpdatePhrase(obj.state);
+        Hangman.Current.RemainingTries = obj.remaining_guesses;
+        Hangman.Current.Status = obj.status;
+        Hangman.Current.Token = obj.token;
     }
 };
 
@@ -48,6 +77,9 @@ Hangman.Utility = {
     }
 }
 Hangman.Solver = {
+    Guess = function() {
+
+    },
 
 };
 Hangman.Dictionary = {
