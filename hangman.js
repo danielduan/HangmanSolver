@@ -1,17 +1,20 @@
 var Hangman = {};
 
-Hangman.Init = {
-	StartGame: function() {
-        Hangman.Current.URL = $("#URL").val();
-		Hangman.JSONUtility.Init();
-	}
-};
-
 Hangman.Current = {
     URL: "",
     Phrase: "",
-    Tries: 0,
-}
+    RemainingTries: 0,
+    Status: "DEAD",
+    Token: 0
+};
+
+Hangman.Init = {
+	StartGame: function() {
+        var proxyURL = "http://huluhangman.herokuapp.com/proxy.php?url=";
+        Hangman.Current.URL = proxyURL + $("#URL").val();
+		Hangman.JSONUtility.Init();
+	}
+};
 
 Hangman.JSONUtility = {
 	Init: function() {
