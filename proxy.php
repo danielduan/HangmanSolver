@@ -1,4 +1,4 @@
 <?php
-$jsonp = "function(".file_get_contents($_GET['url']).");";
+$jsonp = "parseResponse(".file_get_contents($_GET['url']).");";
 print $jsonp;
 ?>
