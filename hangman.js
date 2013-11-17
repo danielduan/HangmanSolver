@@ -33,7 +33,10 @@ Hangman.JSONUtility = {
                 console.log(ajaxOptions);
 		    }
         });
-	}
+	},
+    ParseResponse: function(obj) {
+        return eval(obj);
+    }
 };
 
 Hangman.Utility = {

@@ -1,4 +1,4 @@
 <?php
-$jsonp = "parseResponse(".file_get_contents($_GET['url']).");";
+$jsonp = "Hangman.JSONUtility.ParseResponse(".file_get_contents($_GET['url']).");";
 print $jsonp;
 ?>
