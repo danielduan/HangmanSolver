@@ -47,16 +47,22 @@
 				margin: 0 auto;
 				overflow-y:scroll;
 			}
+			#Stats {
+				display:block;
+			}
+			#URL {
+				 width:450px;
+			}
 		</style>
 	</head>
 	<body>
 		<div id="topbar">
 			URL: 
-			<input id="URL" style="width:450px" type="text" value="http://gallows.hulu.com/play?code=danielduan88@yahoo.com">
+			<input id="URL" type="text" value="http://gallows.hulu.com/play?code=danielduan88@yahoo.com">
 			Repeat: 
 			<input id="Repeat" type="number" value="1">
 			<button type="button" onclick="Hangman.Init.StartGame();">Start Game and Solve</button>
-			<span id="Stats" style="display:block;">Loading...</span>
+			<span id="Stats">Loading...</span>
 			<div id="hangmanPhrase">
 			Please start a new game.
 		</div>
