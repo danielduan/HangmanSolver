@@ -1,5 +1,6 @@
 var Hangman = {};
 
+//keeps current game state
 Hangman.Current = {
     URL: "",
     Phrase: "",
@@ -38,6 +39,7 @@ Hangman.Current = {
     },
 };
 
+//initializer for running game
 Hangman.Init = {
 	StartGame: function() {
         var proxyURL = "http://huluhangman.herokuapp.com/proxy.php?url=";
@@ -50,7 +52,9 @@ Hangman.Init = {
     }
 };
 
+//gets JSON from remote server
 Hangman.JSONUtility = {
+    //starts a new game
 	Init: function() {
 		$.ajax({
             type: 'GET',
@@ -72,6 +76,7 @@ Hangman.JSONUtility = {
             }
         });
 	},
+    //subsequent guesses
     Guess: function(guess) {
         $.ajax({
             type: 'GET',
@@ -92,6 +97,7 @@ Hangman.JSONUtility = {
             }
         });
     },
+    //takes JSON response and loads the info
     ParseResponse: function(obj) {
         obj = eval(obj);
         Hangman.Current.Phrase = obj.state;
@@ -103,6 +109,7 @@ Hangman.JSONUtility = {
     }
 };
 
+//updates HTML
 Hangman.Utility = {
     AppendOutput: function(output) {
         $("#hangmanOutput").html($("#hangmanOutput").html() + output + "<br/>");
@@ -116,7 +123,9 @@ Hangman.Utility = {
     }
 };
 
+//actual solving is done here
 Hangman.Solver = {
+    //starts game and loads dictionary
     Init: function() {
         Hangman.Utility.AppendOutput("* Initializing " + Hangman.Current.Phrase);
         var alphaNum = this.LoadDictionary("Dictionary");
@@ -134,6 +143,7 @@ Hangman.Solver = {
         Hangman.Utility.AppendOutput("* - Guessing " + maxLetter);
         Hangman.JSONUtility.Guess(maxLetter);
     },
+    //helper for loading dictionary, either 'Dictionary' or 'ExtendedDictionary'
     LoadDictionary: function(dictionary) {
         Hangman.Utility.AppendOutput("* Loading " + dictionary);
         var words = Hangman.Current.Phrase.split(" ");
@@ -159,6 +169,7 @@ Hangman.Solver = {
         
         return alphaNum;
     },
+    //determine if a guess is valid for a particular sequence of words
     IsPossibleWord: function(hangmanWord, dictWord) {
         hangmanWord = hangmanWord.split("");
         dictWord = dictWord.split("");
@@ -169,6 +180,7 @@ Hangman.Solver = {
         }
         return true;
     },
+    //subsequent guesses are handled here
     NextGuess: function() {
         if (Hangman.Current.Status == "DEAD") {
             var status = "Died :( Phrase is '" + Hangman.Current.Phrase + "'";
@@ -222,16 +234,17 @@ Hangman.Solver = {
             }
         }
 
+        //if no letters are determined, then word doesn't exist in dictionary
         if (maxLetter == "") {
             Hangman.Utility.AppendOutput("* Unknown Word");
+            //import extended dict if haven't done so
             if (Hangman.Current.ExtendedDict == false) {
                 //import extended dictionary and reguess
                 Hangman.Current.ExtendedDict = true;
                 this.LoadDictionary("ExtendedDictionary");
                 Hangman.Solver.NextGuess();
                 return;
-            } else {
-                //guess based on letter occurance frequencies
+            } else { //guess based on letter occurance frequencies
                 for (var i = 0; i < Hangman.Dictionary.AlphaFrequency.length; i += 1) {
                     if (Hangman.Current.Guessed.indexOf(Hangman.Dictionary.AlphaFrequency[i]) === -1) {
                         maxLetter = Hangman.Dictionary.AlphaFrequency[i];
