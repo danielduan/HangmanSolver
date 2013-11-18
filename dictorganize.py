@@ -1,4 +1,4 @@
-lines = [line.strip() for line in open('words.txt')]
+lines = [line.strip() for line in open('extendedwords.txt')]
 dict = {}
 for l in lines:
 	if (len(l) in dict.keys()):

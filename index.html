@@ -5,8 +5,12 @@
 	</head>
 	<body>
 		<div>
+			URL: 
 			<input id="URL" style="width:450px" type="text" value="http://gallows.hulu.com/play?code=danielduan88@yahoo.com">
+			Repeat: 
+			<input id="Repeat" type="number" value="1">
 			<button type="button" onclick="Hangman.Init.StartGame();">Start Game and Solve</button>
+			<span id="Stats"></span>
 		</div>
 		<div id="hangmanPhrase">
 			Please start a new game.
@@ -16,5 +20,6 @@
 		<script src="jquery-2.0.3.min.js"></script>
 		<script src="hangman.js"></script>
 		<script src="dictionary.js"></script>
+		<script src="extdictionary.js"></script>
 	</body>
 </html>
