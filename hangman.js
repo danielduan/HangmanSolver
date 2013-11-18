@@ -7,6 +7,7 @@ Hangman.Current = {
     Status: "DEAD",
     Token: 0,
     Guessed: "",
+    PossibleWords: [],
 };
 
 Hangman.Init = {
@@ -34,7 +35,8 @@ Hangman.JSONUtility = {
                 }
 		    },
             complete: function() {
-                Hangman.Solver.NextGuess();
+                Hangman.Utility.AppendOutput("New Game Token=" + Hangman.Current.Token);
+                Hangman.Solver.Init();
             }
         });
 	},
@@ -75,13 +77,109 @@ Hangman.Utility = {
     UpdatePhrase: function(output) {
         $("#hangmanPhrase").html(output);
     }
-}
-Hangman.Solver = {
-    Guess = function() {
-
-    },
-
 };
-Hangman.Dictionary = {
+
+Hangman.Solver = {
+    Init: function() {
+        Hangman.Utility.AppendOutput("Calculating " + Hangman.Current.Phrase);
+        var words = Hangman.Current.Phrase.split(" ");
+        var alphaNum = {}; //holds dictionary of letter frequency
+        //iterate through ___ ____ ____
+        for (var i = 0; i < words.length; i += 1) {
+            Hangman.Current.PossibleWords[i] = [];
+            var dict = "len" + words[i].length;
+            //iterate through possible words in dictionary with same length
+            for (var j = 0; j < Hangman.Dictionary[dict].length; j += 1) {
+                var dictWord = Hangman.Dictionary[dict][j].toUpperCase();
+                Hangman.Current.PossibleWords[i].push(dictWord);
+                var letters = dictWord.split("");
+                //count the letters in the word
+                for (var k = 0; k < letters.length; k += 1) {
+                    if (alphaNum[letters[k]] == null) {
+                        alphaNum[letters[k]] = 0;
+                    }
+                    alphaNum[letters[k]] += 1;
+                }
+            }
+        }
+        //find letter with max frequency
+        var maxNum = 0;
+        var maxLetter = "";
+        for (var key in alphaNum) {
+            if (alphaNum[key] > maxNum) {
+                maxNum = alphaNum[key];
+                maxLetter = key;
+            }
+        }
+
+        Hangman.Current.Guessed += maxLetter;
+        Hangman.Utility.AppendOutput("Guessing " + maxLetter);
+        Hangman.JSONUtility.Guess(maxLetter);
+    },
+    IsPossibleWord: function(hangmanWord, dictWord) {
+        hangmanWord = hangmanWord.split("");
+        dictWord = dictWord.split("");
+        for (var i = 0; i < hangmanWord.length; i++) {
+            if (hangmanWord[i] != "_" && hangmanWord[i] != dictWord[i]) {
+                return false;
+            }
+        }
+        return true;
+    },
+    NextGuess: function() {
+        if (Hangman.Current.Status == "DEAD") {
+            var status = "Died :( Phrase is " + Hangman.Current.Phrase;
+            Hangman.Utility.UpdatePhrase(status);
+            Hangman.Utility.AppendOutput("Died :(" + Hangman.Current.Phrase);
+            return;
+        } else if (Hangman.Current.Status == "FREE") {
+            var status = "FREE :) Phrase is " + Hangman.Current.Phrase;
+            Hangman.Utility.UpdatePhrase(status);
+            Hangman.Utility.AppendOutput("FREE :)" + Hangman.Current.Phrase);
+            return;
+        }
+
+        Hangman.Utility.AppendOutput("Calculating " + Hangman.Current.Phrase);
+
+        var words = Hangman.Current.Phrase.split(" ");
+        var alphaNum = {}; //holds dictionary of letter frequency
+        //iterate through ___ ____ ____
+        for (var i = 0; i < words.length; i += 1) {
+            var pastPossibleWords = Hangman.Current.PossibleWords[i];
+            var newPossibleWords = [];
+            var currentWord = words[i].split("");
+            //iterate through past possible words and form new possible word list
+            for (var j = 0; j < pastPossibleWords.length; j += 1) {
+                if (Hangman.Solver.IsPossibleWord(words[i], pastPossibleWords[j])) {
+                    newPossibleWords.push(pastPossibleWords[j]);
+                }
+            }
+            Hangman.Current.PossibleWords[i] = newPossibleWords;
+            //count letter frequencies
+            for (var j = 0; j < Hangman.Current.PossibleWords[i].length; j += 1) {
+                var letters = Hangman.Current.PossibleWords[i][j].split("");
+                //count the letters in the word
+                for (var k = 0; k < letters.length; k += 1) {
+                    if (alphaNum[letters[k]] == null) {
+                        alphaNum[letters[k]] = 0;
+                    }
+                    alphaNum[letters[k]] += 1;
+                }
+            }
+        }
+        //find letter with max frequency
+        var maxNum = 0;
+        var maxLetter = "";
+        for (var key in alphaNum) {
+            if (alphaNum[key] > maxNum && Hangman.Current.Guessed.indexOf(key) === -1) {
+                maxNum = alphaNum[key];
+                maxLetter = key;
+            }
+        }
+
+        Hangman.Current.Guessed += maxLetter;
+        Hangman.Utility.AppendOutput("Guessing " + maxLetter);
+        Hangman.JSONUtility.Guess(maxLetter);
+    },
 
 };
