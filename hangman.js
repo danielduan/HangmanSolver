@@ -177,6 +177,10 @@ Hangman.Solver = {
             }
         }
 
+        if (maxLetter == "") {
+            return;
+        }
+
         Hangman.Current.Guessed += maxLetter;
         Hangman.Utility.AppendOutput("Guessing " + maxLetter);
         Hangman.JSONUtility.Guess(maxLetter);
