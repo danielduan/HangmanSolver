@@ -235882,3 +235882,6 @@ len24: [
 'thyroparathyroidectomize',
 ],
 }
+
+
+$("#Stats").html("0/0 Games Won");

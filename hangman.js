@@ -32,8 +32,8 @@ Hangman.Current = {
     },
     UpdateStats: function() {
         var output = this.TotalSolved + "/" + this.TotalPlayed;
-        output += "   " + (100.0 * this.TotalSolved / this.TotalPlayed);
-        output += "% Games Won";
+        output += " Games Won - " + Math.round(100.0 * this.TotalSolved / this.TotalPlayed);
+        output += "% Success Rate";
         $("#Stats").html(output);
     },
 };
@@ -67,7 +67,7 @@ Hangman.JSONUtility = {
                 }
 		    },
             complete: function() {
-                Hangman.Utility.AppendOutput("New Game Token=" + Hangman.Current.Token);
+                Hangman.Utility.AppendOutput("[New Game Token=" + Hangman.Current.Token + "]");
                 Hangman.Solver.Init();
             }
         });
@@ -105,6 +105,7 @@ Hangman.JSONUtility = {
 Hangman.Utility = {
     AppendOutput: function(output) {
         $("#hangmanOutput").html($("#hangmanOutput").html() + output + "<br/>");
+        $("#Scroller").scrollTop($("#Scroller")[0].scrollHeight);
     },
     UpdatePhrase: function(output) {
         $("#hangmanPhrase").html(output);
@@ -113,7 +114,7 @@ Hangman.Utility = {
 
 Hangman.Solver = {
     Init: function() {
-        Hangman.Utility.AppendOutput("Calculating " + Hangman.Current.Phrase);
+        Hangman.Utility.AppendOutput("* Initializing " + Hangman.Current.Phrase);
         var alphaNum = this.LoadDictionary("Dictionary");
         //find letter with max frequency
         var maxNum = 0;
@@ -126,11 +127,11 @@ Hangman.Solver = {
         }
 
         Hangman.Current.Guessed += maxLetter;
-        Hangman.Utility.AppendOutput("Guessing " + maxLetter);
+        Hangman.Utility.AppendOutput("* - Guessing " + maxLetter);
         Hangman.JSONUtility.Guess(maxLetter);
     },
     LoadDictionary: function(dictionary) {
-        Hangman.Utility.AppendOutput("Loading " + dictionary);
+        Hangman.Utility.AppendOutput("* Loading " + dictionary);
         var words = Hangman.Current.Phrase.split(" ");
         var alphaNum = {}; //holds dictionary of letter frequency
         //iterate through ___ ____ ____
@@ -168,18 +169,18 @@ Hangman.Solver = {
         if (Hangman.Current.Status == "DEAD") {
             var status = "Died :( Phrase is " + Hangman.Current.Phrase;
             Hangman.Utility.UpdatePhrase(status);
-            Hangman.Utility.AppendOutput("Died :( " + Hangman.Current.Phrase);
+            Hangman.Utility.AppendOutput("Died :( " + Hangman.Current.Phrase + "<br/>");
             Hangman.Current.Clear();
             return;
         } else if (Hangman.Current.Status == "FREE") {
             var status = "FREE :) Phrase is " + Hangman.Current.Phrase;
             Hangman.Utility.UpdatePhrase(status);
-            Hangman.Utility.AppendOutput("FREE :) " + Hangman.Current.Phrase);
+            Hangman.Utility.AppendOutput("FREED! :) " + Hangman.Current.Phrase + "<br/>");
             Hangman.Current.Clear();
             return;
         }
 
-        Hangman.Utility.AppendOutput("Calculating " + Hangman.Current.Phrase);
+        Hangman.Utility.AppendOutput("* - " + Hangman.Current.RemainingTries + " Tries Left " + Hangman.Current.Phrase);
 
         var words = Hangman.Current.Phrase.split(" ");
         var alphaNum = {}; //holds dictionary of letter frequency
@@ -218,7 +219,7 @@ Hangman.Solver = {
         }
 
         if (maxLetter == "") {
-            Hangman.Utility.AppendOutput("Existing Dictionary Empty");
+            Hangman.Utility.AppendOutput("* Unknown Word");
             if (Hangman.Current.ExtendedDict == false) {
                 //import extended dictionary and reguess
                 Hangman.Current.ExtendedDict = true;
@@ -237,8 +238,8 @@ Hangman.Solver = {
             
         }
 
-        Hangman.Current.Guessed += maxLetter;
-        Hangman.Utility.AppendOutput("Guessing " + maxLetter);
+        Hangman.Current.Guessed += maxLetter.toUpperCase();
+        Hangman.Utility.AppendOutput("* - Guessing " + maxLetter);
         Hangman.JSONUtility.Guess(maxLetter);
     },
 

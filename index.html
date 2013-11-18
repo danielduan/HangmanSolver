@@ -2,20 +2,58 @@
 <html>
 	<head>
 		<title>Hulu Hangman Challenge</title>
+		<style type="text/css">
+			body {
+				font-family:'Consolas', 'Courier New', 'Lucida Console', Serif;
+			}
+			#topbar {
+				margin: 0 auto;
+				text-align:center;
+				background-color: lightgray;
+				width:900px;
+			}
+			#hangmanOutput {
+				padding-top: 15px;
+				padding-bottom: 15px;
+				width:600px;
+				margin: 0 auto;
+				background-color:"black";
+				color:limegreen;
+			}
+			#hangmanPhrase {
+				text-align:center;
+				font-size:25px;
+				height:45px;
+				margin-top:10px;
+				margin-bottom:10px;
+				width:900px;
+				margin: 0 auto;	
+			}
+			#Scroller {
+				width:900px;
+				height:700px;
+				background-color:black;
+				margin: 0 auto;
+				overflow-y:scroll;
+			}
+		</style>
 	</head>
 	<body>
-		<div>
+		<div id="topbar">
 			URL: 
 			<input id="URL" style="width:450px" type="text" value="http://gallows.hulu.com/play?code=danielduan88@yahoo.com">
 			Repeat: 
 			<input id="Repeat" type="number" value="1">
 			<button type="button" onclick="Hangman.Init.StartGame();">Start Game and Solve</button>
-			<span id="Stats"></span>
-		</div>
-		<div id="hangmanPhrase">
+			<span id="Stats" style="display:block;">Loading...</span>
+			<div id="hangmanPhrase">
 			Please start a new game.
 		</div>
-		<div id="hangmanOutput">
+		</div>
+		
+		<div id="Scroller" style="">
+			<div id="hangmanOutput" style="">
+			</div>
 		</div>
 		<script src="jquery-2.0.3.min.js"></script>
 		<script src="hangman.js"></script>
