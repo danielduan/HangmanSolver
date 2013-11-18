@@ -171,13 +171,13 @@ Hangman.Solver = {
     },
     NextGuess: function() {
         if (Hangman.Current.Status == "DEAD") {
-            var status = "Died :( Phrase is " + Hangman.Current.Phrase;
+            var status = "Died :( Phrase is '" + Hangman.Current.Phrase + "'";
             Hangman.Utility.UpdatePhrase(status);
             Hangman.Utility.AppendOutput("Died :( " + Hangman.Current.Phrase + "<br/>");
             Hangman.Current.Clear();
             return;
         } else if (Hangman.Current.Status == "FREE") {
-            var status = "FREE :) Phrase is " + Hangman.Current.Phrase;
+            var status = "FREE :) Phrase is '" + Hangman.Current.Phrase + "'";
             Hangman.Utility.UpdatePhrase(status);
             Hangman.Utility.AppendOutput("FREED! :) " + Hangman.Current.Phrase + "<br/>");
             Hangman.Current.Clear();
