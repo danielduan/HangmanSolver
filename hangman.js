@@ -96,6 +96,7 @@ Hangman.JSONUtility = {
         obj = eval(obj);
         Hangman.Current.Phrase = obj.state;
         Hangman.Utility.UpdatePhrase(obj.state);
+        Hangman.Utility.UpdateImage(obj.remaining_guesses);
         Hangman.Current.RemainingTries = obj.remaining_guesses;
         Hangman.Current.Status = obj.status;
         Hangman.Current.Token = obj.token;
@@ -109,6 +110,9 @@ Hangman.Utility = {
     },
     UpdatePhrase: function(output) {
         $("#hangmanPhrase").html(output);
+    },
+    UpdateImage: function(lives) {
+        $("#preImage").html(Hangman.Images[lives].replace(" ", "&nbsp"));
     }
 };
 

@@ -15,10 +15,21 @@
 			#hangmanOutput {
 				padding-top: 15px;
 				padding-bottom: 15px;
-				width:600px;
-				margin: 0 auto;
+				width:550px;
+				height:600px;
+				margin-right:25px;
 				background-color:"black";
 				color:limegreen;
+				float:right;
+			}
+			#hangmanImage {
+				padding-top: 30px;
+				width:200px;
+				margin-left: 50px;
+				background-color:"black";
+				float:right;
+				color:limegreen;
+				position: fixed;
 			}
 			#hangmanPhrase {
 				text-align:center;
@@ -51,12 +62,17 @@
 		</div>
 		</div>
 		
-		<div id="Scroller" style="">
-			<div id="hangmanOutput" style="">
+		<div id="Scroller">
+			<div id="hangmanOutput">
+			</div>
+			<div id="hangmanImage">
+				<pre id="preImage">
+				</pre>
 			</div>
 		</div>
 		<script src="jquery-2.0.3.min.js"></script>
 		<script src="hangman.js"></script>
+		<script src="image.js"></script>
 		<script src="dictionary.js"></script>
 		<script src="extdictionary.js"></script>
 	</body>
