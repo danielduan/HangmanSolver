@@ -7,7 +7,7 @@ By Daniel Duan
 This challenge is done in HTML and Javascript. I used two dictionaries, one
 for most commonly used words, and one for extended guesses.
 
-Success rate ranges from ~40-~70% depending on luck.
+Success rate ranges from 40-70% depending on luck.
 
 How to use:
 *	Open index.html
