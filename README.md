@@ -1,6 +1,7 @@
 Hangman Solver for Hulu
 =====
 http://huluhangman.herokuapp.com/
+
 By Daniel Duan
 
 This challenge is done in HTML and Javascript. I used two dictionaries, one
