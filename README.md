@@ -15,6 +15,11 @@ How to use:
 *	Input the number of repetitions wanted
 *	Click solve and it will start the requested number of runs
 
+~~~~~ This only works in conjunction with Hulu's server, response is encoded in JSON ~~~~~
+*	state: ALIVE, DEAD, FREE
+*	remaining_guesses: 0-3
+*	token: __ ___A_ ___ (underscore means unguessed letter, spaces and punctuations are provided)
+
 Files:
 *	index.html - page for hangman solver.
 *	dictionary.js - the 5,000 most used words.
